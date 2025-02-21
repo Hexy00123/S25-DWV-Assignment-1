@@ -7,5 +7,6 @@ export default defineConfig({
   server: {
     host: true,
     allowedHosts: ['f1b2-85-159-226-45.ngrok-free.app']
-  }
+  }, 
+  base: '/S25-DWV-Assignment-1'
 })

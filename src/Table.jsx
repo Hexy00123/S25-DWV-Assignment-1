@@ -4,39 +4,44 @@ import Paper from '@mui/material/Paper';
 import WikiButton from './WikiButton';
 
 const columns = [
-//   { field: 'id', headerName: 'ID', width: 70 },
-//   { field: 'firstName', headerName: 'First name', width: 160 },
-//   { field: 'lastName', headerName: 'Last name', width: 160 },
-//   {
-//     field: 'age',
-//     headerName: 'Age',
-//     type: 'number',
-//     width: 120,
-//   },
-//   {
-//     field: 'fullName',
-//     headerName: 'Full name',
-//     description: 'This column has a value getter and is not sortable.',
-//     sortable: false,
-//     width: 160,
-//     valueGetter: (value, row) => `${row.firstName || ''} ${row.lastName || ''}`,
-//   },
-
-    // { field: 'id', headerName: 'ID', width: 200 },
-    { field: 'title', headerName: 'Title', width: 200 },
-    { field: 'release_year', headerName: 'Release Year', width: 150 },
-    { field: 'country', headerName: 'Country', width: 200 },
-    { field: 'director', headerName: 'Director', width: 200 },  
-    { field: 'box_office', headerName: 'Box office ($)', width: 200, type: 'number'},
-    { 
-        field: 'url', 
-        headerName: 'URL', 
-        width: 200,
-        renderCell: (params) => <WikiButton url={params.value} />
-    }
+  { field: 'title', 
+    headerName: 'Title', 
+    width: 300, 
+    headerAlign: 'center', 
+  },
+  { field: 'release_year', 
+    headerName: 'Release Year', 
+    width: 150, type: 'number', 
+    headerAlign: 'center', 
+    renderCell: (params) => params.value?.toString().slice(0, 4) 
+   },
+  { field: 'country', 
+    headerName: 'Country', 
+    width: 200, 
+    headerAlign: 'center', 
+    align: 'center' 
+  },
+  { field: 'director', 
+    headerName: 'Director', 
+    width: 200, 
+    headerAlign: 'center', 
+    align: 'center' 
+  },
+  { field: 'box_office', 
+    headerName: 'Box office ($)', 
+    width: 200, 
+    type: 'number', 
+    headerAlign: 'center', 
+    renderCell: (params) => params.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') 
+  },
+  { 
+    field: 'url', 
+    headerName: 'URL', 
+    width: 200,
+    headerAlign: 'center', 
+    renderCell: (params) => <WikiButton url={params.value} />
+  }
 ];
-
-
 
 const paginationModel = { page: 0, pageSize: 100 };
 
@@ -44,7 +49,7 @@ export default function DataTable() {
     const [rows, setRows] = React.useState([]);
 
     React.useEffect(() => {
-        fetch('/films.json')
+        fetch('/S25-DWV-Assignment-1/films.json')
             .then((response) => response.json())
             .then((rows) => setRows(rows))
             .catch((error) => {
@@ -55,7 +60,7 @@ export default function DataTable() {
 
   return (
     <>
-    Total docs: {rows.length}
+    <h1> Films viewer  </h1>
     <Paper sx={{ height: 800, width: '100%' }}>
       <DataGrid
         rows={rows}
@@ -67,7 +72,6 @@ export default function DataTable() {
         sx={{ border: 0 }}
       />
     </Paper>    
-    {/* <WikiButton/> */}
     </>
   );
 }
