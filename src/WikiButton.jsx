@@ -1,6 +1,6 @@
 import React from 'react';
 
-
+// To implement this button I have just found a service that converted wikipedia logo to svg code. 
 export default function WikiButton({ url }) {
     return (<>
 <div className="example-2">

@@ -3,6 +3,7 @@ import { DataGrid } from '@mui/x-data-grid';
 import Paper from '@mui/material/Paper';
 import WikiButton from './WikiButton';
 
+// Table columns configuration
 const columns = [
   { field: 'title', 
     headerName: 'Title', 
@@ -13,6 +14,8 @@ const columns = [
     headerName: 'Release Year', 
     width: 150, type: 'number', 
     headerAlign: 'center', 
+
+    // Render year in order to not to be displayed as a number with decimal points
     renderCell: (params) => params.value?.toString().slice(0, 4) 
    },
   { field: 'country', 
@@ -32,6 +35,7 @@ const columns = [
     width: 200, 
     type: 'number', 
     headerAlign: 'center', 
+    // Render box office in order to be displayed with commas
     renderCell: (params) => params.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') 
   },
   { 
@@ -39,6 +43,7 @@ const columns = [
     headerName: 'URL', 
     width: 200,
     headerAlign: 'center', 
+    // Render URL as a clickable button
     renderCell: (params) => <WikiButton url={params.value} />
   }
 ];
@@ -48,6 +53,7 @@ const paginationModel = { page: 0, pageSize: 100 };
 export default function DataTable() {
     const [rows, setRows] = React.useState([]);
 
+    // fethcing data from the server (self request)
     React.useEffect(() => {
         fetch('/S25-DWV-Assignment-1/films.json')
             .then((response) => response.json())
@@ -68,7 +74,6 @@ export default function DataTable() {
         getRowId={(row) => row.url}
         initialState={{ pagination: { paginationModel } }}
         pageSizeOptions={[10, 50, 100]}
-        // checkboxSelection
         sx={{ border: 0 }}
       />
     </Paper>    
