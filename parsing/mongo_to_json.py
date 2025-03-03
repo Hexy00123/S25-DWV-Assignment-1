@@ -15,7 +15,7 @@ if __name__ == '__main__':
             del film['_id'] 
             films.append(film)
             
-    with open('data/films.json', 'w') as file: 
+    with open('../public/films.json', 'w') as file: 
         json.dump(films, file, indent=2)
         
     

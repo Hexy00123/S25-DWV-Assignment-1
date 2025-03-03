@@ -39,7 +39,7 @@ class Parser:
         for film_data_raw in table.find_all('tr')[1:]:
             url = 'https://en.wikipedia.org' + film_data_raw.find('i').find('a').get('href')
             
-            box_office = film_data_raw.find_all('td')[1].text.replace(',', '') 
+            box_office = next(filter(lambda tag: "$" in tag.text, film_data_raw.find_all('td'))).text.replace(',', '')             
             box_office = ''.join(char if char.isnumeric() else ' ' for char in box_office[1:]).split()[0]
 
             contains = await collection.find_one({"url": url})
@@ -130,33 +130,4 @@ if __name__ == '__main__':
     parser = Parser() 
     asyncio.run(parser.extract_film_urls(parser.listing_url))
     asyncio.run(parser.parse_films_data())
-    
-    # bad_film_urls = [
-    #     'https://en.wikipedia.org/wiki/Frozen_(2013_film)',
-    #     'https://en.wikipedia.org/wiki/Shrek_2',
-    #     'https://en.wikipedia.org/wiki/Aladdin_(1992_Disney_film)',
-    #     'https://en.wikipedia.org/wiki/The_Lion_King',
-    #     'https://en.wikipedia.org/wiki/The_Towering_Inferno',
-    #     'https://en.wikipedia.org/wiki/One_Hundred_and_One_Dalmatians',
-    #     'https://en.wikipedia.org/wiki/West_Side_Story_(1961_film)',
-    #     'https://en.wikipedia.org/wiki/How_the_West_Was_Won_(film)',
-    #     'https://en.wikipedia.org/wiki/The_Longest_Day_(film)',
-    #     'https://en.wikipedia.org/wiki/Lady_and_the_Tramp',
-    #     'https://en.wikipedia.org/wiki/Cinderella_(1950_film)',
-    #     'https://en.wikipedia.org/wiki/King_Solomon%27s_Mines_(1950_film)',
-    #     'https://en.wikipedia.org/wiki/This_Is_Cinerama',
-    #     'https://en.wikipedia.org/wiki/Peter_Pan_(1953_film)',
-    #     'https://en.wikipedia.org/wiki/Song_of_the_South',
-    #     'https://en.wikipedia.org/wiki/The_Red_Shoes_(1948_film)',
-    #     'https://en.wikipedia.org/wiki/Pinocchio_(1940_film)',
-    #     'https://en.wikipedia.org/wiki/Bambi',
-    #     'https://en.wikipedia.org/wiki/King_Kong_(1933_film)',
-    #     'https://en.wikipedia.org/wiki/Snow_White_and_the_Seven_Dwarfs_(1937_film)',
-    #     'https://en.wikipedia.org/wiki/Ben-Hur_(1925_film)',
-    # ]
-    
-    # for url in bad_film_urls: 
-    #     parsed = asyncio.run(parser.parse_film_data(url))    
-    #     print(parsed['director'])
-    #     print()
     
